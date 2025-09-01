@@ -21,6 +21,7 @@ public class DeliveryHomePage {
         helper.clickOnElement(HomePageLocator.whereToDeliver);
         Allure.step("clicked on whereToDeliver");
         helper.clickOnElement(HomePageLocator.clickcountry);
+        Allure.step("clicked on the country");
         helper.sendOnElement(HomePageLocator.searchcountry, "Spain");
         helper.clickOnElement(HomePageLocator.spain);
         helper.sendOnElement(HomePageLocator.delivercity, "Madrid");
