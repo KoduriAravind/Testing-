@@ -26,6 +26,7 @@ public class DownloadCatalogueHomePage {
         helper.sendOnElement(helper.replaceStringToXpath(DownloadCatalogueHomePageLocator.contactform,"Quantity"), "30");
         helper.sendOnElement(helper.replaceStringToXpath(DownloadCatalogueHomePageLocator.contactform, "Company Name"),"LTIMINDTREE");
         helper.clickOnElement(DownloadCatalogueHomePageLocator.downloadnow);
+        Allure.step("clicked on the download catalogue");
     }
  public void verifyStatement(){
         try {
