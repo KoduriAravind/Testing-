@@ -1,17 +1,19 @@
 package utils;
 
+import io.qameta.allure.Allure;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
+import java.util.List;
+import java.util.Set;
 
 public class WebDriverHelper extends Base{
     public WebDriver driver;
+    JavascriptExecutor javascriptExecutor;
     public WebDriverHelper(WebDriver driver){
         this.driver=driver;
     }
@@ -57,6 +59,84 @@ public class WebDriverHelper extends Base{
         String actualText = element.getText();
         Assert.assertEquals(actualText,expectedText);
     }
+    public List<WebElement> getElementsByXpath(String value) {
+        return driver.findElements(By.xpath(value));
+    }
+    public String parent = "";
+    public void switchWindow(WebElement element) {
+        parent = driver.getWindowHandle();
+        element.click();
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(d -> d.getWindowHandles().size() > 1);
+        Set<String> windows =driver.getWindowHandles();
+        for (String window : windows) {
+            if (!driver.equals(window)) {
+                driver.switchTo().window(window);
+            }
+        }
+    }
+    public void switchToWindow(By locator) {
+        String originalWindow = driver.getWindowHandle();
+
+
+        driver.findElement(locator).click();
+
+
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(d -> d.getWindowHandles().size() > 1);
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindow)) {
+                driver.switchTo().window(windowHandle);
+                byte[] screenshotBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                Allure.addAttachment("Screenshot", new ByteArrayInputStream(screenshotBytes));
+
+                break;
+            }
+        }
+
+
+        driver.switchTo().window(originalWindow);
+    }
+    public void scrollToFooter(){
+        javascriptExecutor=(JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+    public void scrollIntoView(By locator) {
+        WebElement element = driver.findElement(locator);
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+    public void selectDropDown(By locator, String value) {
+        WebElement element = driver.findElement(locator);
+        Select select = new Select(element);
+        select.selectByValue(value);
+    }
+    public void selectDropDownVisible(By locator, String value) {
+        WebElement element = driver.findElement(locator);
+        Select select = new Select(element);
+        select.selectByVisibleText(value);
+
+    }
+    public List<WebElement> selectDropDownList(By locator) {
+        WebElement element = driver.findElement(locator);
+        Select select = new Select(element);
+        List<WebElement> list=select.getAllSelectedOptions();
+        return list;
+    }
+    public void switchFrame(By locator){
+        WebElement element=driver.findElement(locator);
+        driver.switchTo().frame(element);
+    }
+    public void swithOutFrame(){
+        driver.switchTo().defaultContent();
+    }
+    public WebElement getWebElement(By locator){
+        WebElement element=driver.findElement(locator);
+        return element;
+    }
+
+
+
+
 
 
 }

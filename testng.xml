@@ -1,0 +1,12 @@
+<suite name="GroupSuite">
+    <test name="ChromeTest" thread-count="5">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="runner.TestSample"/>
+        </classes>
+    </test>
+</suite>

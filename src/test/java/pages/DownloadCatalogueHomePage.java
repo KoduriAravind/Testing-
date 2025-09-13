@@ -32,7 +32,7 @@ public class DownloadCatalogueHomePage {
         try {
 
         helper.waitForVisible(DownloadCatalogueHomePageLocator.Thanjoyou);
-        helper.verifyTextContains(DownloadCatalogueHomePageLocator.Thanjoyou,"Thank you for submitting your corporate quer");
+        helper.verifyTextContains(DownloadCatalogueHomePageLocator.Thanjoyou,"Thank you for submitting your corporate query");
             Allure.step("verified catalouge page", Status.PASSED);
         } catch (Exception e) {
             Allure.step("Not verified catalogue page",Status.FAILED);
